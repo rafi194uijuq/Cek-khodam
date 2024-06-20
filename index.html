@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cek Khodam</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -22,29 +24,11 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 350px;
+            margin-bottom: 20px;
         }
         h1 {
             margin-bottom: 20px;
             font-size: 24px;
-        }
-        input[type="text"] {
-            padding: 12px;
-            width: calc(100% - 26px);
-            margin-bottom: 15px;
-            border: 2px solid #fff;
-            border-radius: 25px;
-            background: transparent;
-            color: #fff;
-            font-size: 16px;
-            text-align: center;
-            transition: border-color 0.3s;
-        }
-        input[type="text"]:focus {
-            border-color: #ff416c;
-            outline: none;
-        }
-        input[type="text"]::placeholder {
-            color: #ddd;
         }
         button {
             padding: 12px 25px;
@@ -60,111 +44,134 @@
             background-color: #ff4b2b;
             transform: scale(1.05);
         }
-        .result {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            min-height: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 10px;
+        marquee {
+            width: 100%;
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+            font-size: 20px;
         }
-        .loading {
-            display: none;
-            margin-top: 20px;
-            font-size: 16px;
-            text-align: center;
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #ff416c;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .khodam-animation {
-            animation: blink 0.5s step-end infinite alternate;
-        }
-        @keyframes blink {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0.1;
-            }
-        }
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        
+        .copyright {
+          position: fixed;
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 12px;
+          color: white;
         }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h1>Cek Khodam Anda</h1>
-    <input type="text" id="nameInput" placeholder="Masukkan nama Anda">
-    <button onclick="cekKhodam()">Cek Khodam</button>
-    <div class="result" id="result"></div>
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div class="loading-text"></div>
-    </div>
+    <button onclick="showInputName()">Cek khodam</button>
+    <marquee id="historyMarquee" behavior="scroll" direction="left"></marquee>
 </div>
 
+<div class="copyright">
+  <p>Copyright 2024 | Rafi Code</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function cekKhodam() {
-        const khodams = [
-            "Khodam Macan Putih",
-            "Khodam Laba laba",
-            "Khodam Sapi",
-            "Khodam Kambing",
-            "Khodam Kalajengking",
-            "Khodam Kelabang",
-            "Khodam Kera",
-            "Khodam Gajah",
-            "Khodam Singa Jawa",
-            "Khodam Ikan",
-            "Tidak Ada Khodam"
-        ];
+    document.addEventListener('DOMContentLoaded', (event) => {
+        loadHistory();
+    });
 
-        const name = document.getElementById("nameInput").value.trim();
-        if (name === "") {
-            alert("Silakan masukkan nama Anda.");
-            return;
-        }
-
-        const resultDiv = document.getElementById("result");
-        const loadingDiv = document.getElementById("loading");
-
-        resultDiv.innerText = "";
-        loadingDiv.style.display = "block";
-
-        let count = 0;
-        const interval = setInterval(() => {
-            const randomIndex = Math.floor(Math.random() * khodams.length);
-            document.querySelector(".loading-text").innerHTML = `<span class="khodam-animation">${khodams[randomIndex]}</span>`;
-            count++;
-            if (count >= 30) {
-                clearInterval(interval);
-                const finalKhodam = khodams[randomIndex];
-                loadingDiv.style.display = "none";
-                resultDiv.innerHTML = `<span style="animation: fadeIn 0.5s ease">${finalKhodam}</span>`;
+    function showInputName() {
+        Swal.fire({
+            title: 'Masukkan nama Anda',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'on',
+                placeholder: 'Masukkan nama Anda'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Cek Khodam',
+            showLoaderOnConfirm: true,
+            preConfirm: (name) => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        if (!name) {
+                            Swal.showValidationMessage('Silakan masukkan nama Anda.');
+                            resolve();
+                        } else {
+                            resolve(name);
+                        }
+                    }, 500); // Simulate async request
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const userName = result.value;
+                cekKhodamWithSweetAlert(userName);
             }
-        }, 100);
+        });
+    }
+
+    function cekKhodamWithSweetAlert(userName) {
+        Swal.fire({
+            title: 'Sedang Meramal...',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                    const khodams = [
+                        "Khodam Macan Putih",
+                        "Khodam Laba laba",
+                        "Khodam Sapi",
+                        "Khodam Kambing",
+                        "Khodam Kalajengking",
+                        "Khodam Kelabang",
+                        "Khodam Kera",
+                        "Khodam Gajah",
+                        "Khodam Singa Jawa",
+                        "Khodam Ikan",
+                        "Tidak Ada Khodam",
+                        "Khodam Kuli",
+                        "Khodam Karyawan"
+                    ];
+                    const randomIndex = Math.floor(Math.random() * khodams.length);
+                    const finalKhodam = khodams[randomIndex];
+                    Swal.close();
+                    saveToHistory(userName, finalKhodam);
+                    showResult(userName, finalKhodam);
+                }, 10000); // Simulate async request
+            }
+        });
+    }
+
+    function showResult(userName, khodam) {
+        Swal.fire({
+            title: 'Khodam Anda',
+            html: `<strong>${userName}</strong>, Anda memiliki <strong>${khodam}</strong>`,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            showClass: {
+                popup: 'animated fadeInDown'
+            },
+            hideClass: {
+                popup: 'animated fadeOutUp'
+            }
+        });
+    }
+
+    function saveToHistory(name, khodam) {
+        const history = JSON.parse(localStorage.getItem('khodamHistory')) || [];
+        history.push(`${name} Mempunyai ${khodam}`);
+        localStorage.setItem('khodamHistory', JSON.stringify(history));
+        loadHistory();
+    }
+
+    function loadHistory() {
+        const history = JSON.parse(localStorage.getItem('khodamHistory')) || [];
+        const marquee = document.getElementById('historyMarquee');
+        marquee.textContent = history.join(' | ');
     }
 </script>
 
