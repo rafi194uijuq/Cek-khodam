@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Khodam</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin: 0;
+            color: #fff;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        input[type="text"] {
+            padding: 12px;
+            width: calc(100% - 26px);
+            margin-bottom: 15px;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #ff416c;
+            outline: none;
+        }
+        input[type="text"]::placeholder {
+            color: #ddd;
+        }
+        button {
+            padding: 12px 25px;
+            border: none;
+            background-color: #ff416c;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #ff4b2b;
+            transform: scale(1.05);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            min-height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .loading {
+            display: none;
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ff416c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .khodam-animation {
+            animation: blink 0.5s step-end infinite alternate;
+        }
+        @keyframes blink {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.1;
+            }
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Cek Khodam Anda</h1>
+    <input type="text" id="nameInput" placeholder="Masukkan nama Anda">
+    <button onclick="cekKhodam()">Cek Khodam</button>
+    <div class="result" id="result"></div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Mengundi khodam...</div>
+    </div>
+</div>
+
+<script>
+    function cekKhodam() {
+        const khodams = [
+            "Khodam Macan Putih",
+            "Khodam Harimau Sumatra",
+            "Khodam Naga Hijau",
+            "Khodam Ular Emas",
+            "Khodam Elang Hitam",
+            "Khodam Serigala Abu-Abu",
+            "Khodam Kera Sakti",
+            "Khodam Gajah Mada",
+            "Khodam Singa Jawa",
+            "Khodam Kuda Laut"
+        ];
+
+        const name = document.getElementById("nameInput").value.trim();
+        if (name === "") {
+            alert("Silakan masukkan nama Anda.");
+            return;
+        }
+
+        const resultDiv = document.getElementById("result");
+        const loadingDiv = document.getElementById("loading");
+
+        resultDiv.innerText = "";
+        loadingDiv.style.display = "block";
+
+        let count = 0;
+        const interval = setInterval(() => {
+            const randomIndex = Math.floor(Math.random() * khodams.length);
+            document.querySelector(".loading-text").innerHTML = `Mengundi khodam... <span class="khodam-animation">${khodams[randomIndex]}</span>`;
+            count++;
+            if (count >= 20) {
+                clearInterval(interval);
+                const finalKhodam = khodams[randomIndex];
+                loadingDiv.style.display = "none";
+                resultDiv.innerHTML = `<span style="animation: fadeIn 0.5s ease">${finalKhodam}</span>`;
+            }
+        }, 100);
+    }
+</script>
+
+</body>
+</html>
