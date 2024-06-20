@@ -62,9 +62,9 @@
         }
         .result {
             margin-top: 20px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
-            min-height: 40px;
+            min-height: 20px;
             background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 10px;
@@ -121,7 +121,7 @@
     <div class="result" id="result"></div>
     <div class="loading" id="loading">
         <div class="spinner"></div>
-        <div class="loading-text">Mengundi khodam...</div>
+        <div class="loading-text"></div>
     </div>
 </div>
 
@@ -129,15 +129,16 @@
     function cekKhodam() {
         const khodams = [
             "Khodam Macan Putih",
-            "Khodam Harimau Sumatra",
-            "Khodam Naga Hijau",
-            "Khodam Ular Emas",
-            "Khodam Elang Hitam",
-            "Khodam Serigala Abu-Abu",
-            "Khodam Kera Sakti",
-            "Khodam Gajah Mada",
+            "Khodam Laba laba",
+            "Khodam Sapi",
+            "Khodam Kambing",
+            "Khodam Kalajengking",
+            "Khodam Kelabang",
+            "Khodam Kera",
+            "Khodam Gajah",
             "Khodam Singa Jawa",
-            "Khodam Kuda Laut"
+            "Khodam Ikan",
+            "Tidak Ada Khodam"
         ];
 
         const name = document.getElementById("nameInput").value.trim();
@@ -155,9 +156,9 @@
         let count = 0;
         const interval = setInterval(() => {
             const randomIndex = Math.floor(Math.random() * khodams.length);
-            document.querySelector(".loading-text").innerHTML = `Mengundi khodam... <span class="khodam-animation">${khodams[randomIndex]}</span>`;
+            document.querySelector(".loading-text").innerHTML = `<span class="khodam-animation">${khodams[randomIndex]}</span>`;
             count++;
-            if (count >= 20) {
+            if (count >= 30) {
                 clearInterval(interval);
                 const finalKhodam = khodams[randomIndex];
                 loadingDiv.style.display = "none";
