@@ -67,7 +67,7 @@
 <div class="container">
     <h1>Cek Khodam Anda</h1>
     <button onclick="showInputName()">Cek khodam</button>
-    <marquee id="historyMarquee" behavior="scroll" direction="left">Selamat datang di website cek khodam <> Website ini dibuat dengan html <> website ini dibuat untuk seru seruan aja dan tidak ada unsur pencemaran nama baik <> jadi kalau baper, skip aja ajg ^_^</marquee>
+    <marquee id="historyMarquee" behavior="scroll" direction="left">Selamat datang di website cek khodam <> Percuma ngechat kalau gak dibales, mending cek khodam :) <> Website ini dibuat untuk seru-seruan, jadi santai saja dan nikmati!</marquee>
 </div>
 
 <div class="copyright">
@@ -97,7 +97,7 @@
                         } else {
                             resolve(name);
                         }
-                    }, 500); // Simulate async request
+                    }, 500);
                 });
             },
             allowOutsideClick: () => !Swal.isLoading()
@@ -136,9 +136,8 @@
                     const randomIndex = Math.floor(Math.random() * khodams.length);
                     const finalKhodam = khodams[randomIndex];
                     Swal.close();
-                    saveToHistory(userName, finalKhodam);
                     showResult(userName, finalKhodam);
-                }, 10000); // Simulate async request
+                }, 10000);
             }
         });
     }
@@ -160,4 +159,4 @@
 </script>
 
 </body>
-    </html>
+</html>
